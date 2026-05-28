@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold"><i class="fas fa-dollar-sign text-success"></i> Gestão Financeira</h2>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-danger border-start border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted fw-bold mb-1">A PAGAR (Pendentes)</h6>
+                        <h3 class="text-danger fw-bold mb-0">R$ {{ "%.2f"|format(t_pagar) }}</h3>
+                    </div>
+                    <i class="fas fa-arrow-down text-danger fa-2x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm border-success border-start border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted fw-bold mb-1">A RECEBER (Pendentes)</h6>
+                        <h3 class="text-success fw-bold mb-0">R$ {{ "%.2f"|format(t_receber) }}</h3>
+                    </div>
+                    <i class="fas fa-arrow-up text-success fa-2x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- CONTAS A PAGAR -->
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span class="fw-bold text-danger"><i class="fas fa-file-invoice-dollar"></i> Contas a Pagar</span>
+                <a href="{{ url_for('financeiro.nova_pagar') }}" class="btn btn-sm btn-outline-danger"><i class="fas fa-plus"></i> Nova</a>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    {% for c in pagar %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-0 fw-medium">{{ c.descricao }}</h6>
+                            <small class="text-muted">Venc: {{ c.data_vencimento.strftime('%d/%m/%Y') }}</small>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold">R$ {{ "%.2f"|format(c.valor) }}</div>
+                            {% if c.status == 'Pendente' %}
+                            <form action="{{ url_for('financeiro.baixar_pagar', id=c.id) }}" method="POST" class="d-inline">
+                                <button class="badge bg-warning border-0" type="submit">Marcar Pago</button>
+                            </form>
+                            {% else %}
+                            <span class="badge bg-success">Pago</span>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item text-center text-muted py-4">Nenhuma conta a pagar.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CONTAS A RECEBER -->
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span class="fw-bold text-success"><i class="fas fa-hand-holding-usd"></i> Contas a Receber</span>
+                <a href="{{ url_for('financeiro.nova_receber') }}" class="btn btn-sm btn-outline-success"><i class="fas fa-plus"></i> Nova</a>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    {% for c in receber %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-0 fw-medium">{{ c.descricao }}</h6>
+                            <small class="text-muted">Venc: {{ c.data_vencimento.strftime('%d/%m/%Y') }}</small>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold">R$ {{ "%.2f"|format(c.valor) }}</div>
+                            {% if c.status == 'Pendente' %}
+                            <form action="{{ url_for('financeiro.baixar_receber', id=c.id) }}" method="POST" class="d-inline">
+                                <button class="badge bg-warning border-0" type="submit">Receber</button>
+                            </form>
+                            {% else %}
+                            <span class="badge bg-success">Recebido</span>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item text-center text-muted py-4">Nenhuma conta a receber.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

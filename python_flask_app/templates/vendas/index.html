@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold"><i class="fas fa-shopping-cart text-primary"></i> Histórico de Vendas</h2>
+    <a href="{{ url_for('vendas.nova') }}" class="btn btn-primary btn-lg fw-bold"><i class="fas fa-plus"></i> Abrir PDV / Nova Venda</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nº Venda</th>
+                        <th>Data/Hora</th>
+                        <th>Cliente</th>
+                        <th>Vendedor</th>
+                        <th class="text-end">Total da Venda</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for v in vendas %}
+                    <tr>
+                        <td class="fw-bold text-muted">#{{ '%06d' % v.id }}</td>
+                        <td>{{ v.criado_em.strftime('%d/%m/%Y %H:%M') }}</td>
+                        <td>{{ v.cliente.nome if v.cliente else 'Consumidor Final' }}</td>
+                        <td>{{ v.vendedor.nome }}</td>
+                        <td class="text-end text-success fw-bold">R$ {{ "%.2f"|format(v.total) }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="5" class="text-center text-muted py-4">Nenhuma venda registrada ainda.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

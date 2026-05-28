@@ -1,0 +1,23 @@
+# Ambiente Node.js
+node_modules/
+npm-debug.log*
+
+# Ambiente Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Bancos de dados e Backups
+*.db
+*.sqlite3
+database/
+backups/
+
+# Variáveis de ambiente
+.env
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db

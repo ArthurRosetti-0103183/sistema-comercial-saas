@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4 fw-bold">
+    <a href="{{ url_for('produtos.index') }}" class="text-decoration-none text-muted"><i class="fas fa-arrow-left"></i></a>
+    {% if produto %}Editar Produto{% else %}Novo Produto{% endif %}
+</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+        <form method="POST">
+            <div class="row">
+                <div class="col-md-8 mb-3">
+                    <label class="form-label fw-medium">Nome do Produto *</label>
+                    <input type="text" name="nome" class="form-control" required value="{{ produto.nome if produto else '' }}">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-medium">Categoria</label>
+                    <input type="text" name="categoria" class="form-control" value="{{ produto.categoria if produto else '' }}">
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-medium">Preço de Custo (R$)</label>
+                    <input type="number" step="0.01" min="0" name="preco_custo" class="form-control" value="{{ produto.preco_custo if produto else '0.00' }}">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-medium text-success">Preço de Venda (R$) *</label>
+                    <input type="number" step="0.01" min="0" name="preco_venda" class="form-control border-success" required value="{{ produto.preco_venda if produto else '0.00' }}">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-medium text-primary">Qtd. em Estoque</label>
+                    <input type="number" name="quantidade_estoque" class="form-control border-primary" value="{{ produto.quantidade_estoque if produto else '0' }}">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-medium text-warning">Estoque Mínimo</label>
+                    <input type="number" name="estoque_minimo" class="form-control border-warning" value="{{ produto.estoque_minimo if produto else '5' }}">
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-medium">Descrição Adicional</label>
+                <textarea name="descricao" class="form-control" rows="2">{{ produto.descricao if produto else '' }}</textarea>
+            </div>
+            
+            <div class="d-flex justify-content-end gap-2">
+                <a href="{{ url_for('produtos.index') }}" class="btn btn-light border">Cancelar</a>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Produto</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

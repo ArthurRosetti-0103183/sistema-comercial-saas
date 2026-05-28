@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4 fw-bold">Dashboard</h2>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="stat-card bg-gradient-primary shadow-sm h-100">
+            <p>Vendas Totais</p>
+            <h3>R$ {{ "%.2f"|format(total_vendido) }}</h3>
+            <i class="fas fa-chart-line position-absolute" style="font-size: 3rem; opacity: 0.2; right: 20px; top: 20px;"></i>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card bg-gradient-warning shadow-sm h-100">
+            <p>Estoque Baixo</p>
+            <h3>{{ produtos_baixos }}</h3>
+            <i class="fas fa-exclamation-triangle position-absolute" style="font-size: 3rem; opacity: 0.2; right: 20px; top: 20px;"></i>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card bg-gradient-danger shadow-sm h-100">
+            <p>Contas Pendentes</p>
+            <h3>{{ contas_pendentes }}</h3>
+            <i class="fas fa-file-invoice-dollar position-absolute" style="font-size: 3rem; opacity: 0.2; right: 20px; top: 20px;"></i>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card bg-gradient-success shadow-sm h-100">
+            <p>Clientes Ativos</p>
+            <h3>{{ qtd_clientes }}</h3>
+            <i class="fas fa-users position-absolute" style="font-size: 3rem; opacity: 0.2; right: 20px; top: 20px;"></i>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card h-100">
+            <div class="card-header">Desempenho de Vendas</div>
+            <div class="card-body">
+                <canvas id="vendasChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header">Resumo Geral</div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Total de Produtos Cadastrados
+                        <span class="badge bg-primary rounded-pill">{{ qtd_produtos }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const ctx = document.getElementById('vendasChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+            datasets: [{
+                label: 'Vendas (R$)',
+                data: [1200, 1900, 3000, 5000, 2000, 3000],
+                backgroundColor: 'rgba(78, 115, 223, 0.5)',
+                borderColor: 'rgba(78, 115, 223, 1)',
+                borderWidth: 1,
+                borderRadius: 5
+            }]
+        },
+        options: {
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4 fw-bold text-success">
+    <a href="{{ url_for('financeiro.index') }}" class="text-decoration-none text-muted"><i class="fas fa-arrow-left"></i></a>
+    Nova Conta a Receber
+</h2>
+
+<div class="card shadow-sm border-success border-top border-4">
+    <div class="card-body p-4">
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label fw-medium">Descrição da Receita *</label>
+                <input type="text" name="descricao" class="form-control" required placeholder="Ex: Prestação Serviço X">
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-medium">Valor (R$) *</label>
+                    <input type="number" step="0.01" min="0" name="valor" class="form-control text-success fw-bold" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-medium">Data de Vencimento *</label>
+                    <input type="date" name="data_vencimento" class="form-control" required>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <a href="{{ url_for('financeiro.index') }}" class="btn btn-light border">Cancelar</a>
+                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Registrar Recebimento</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

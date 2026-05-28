@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4 fw-bold">
+    <a href="{{ url_for('fornecedores.index') }}" class="text-decoration-none text-muted"><i class="fas fa-arrow-left"></i></a>
+    {% if fornecedor %}Editar Fornecedor{% else %}Novo Fornecedor{% endif %}
+</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label fw-medium">Razão Social / Nome *</label>
+                <input type="text" name="nome" class="form-control" required value="{{ fornecedor.nome if fornecedor else '' }}">
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-medium">CNPJ / CPF</label>
+                    <input type="text" name="documento" class="form-control" value="{{ fornecedor.documento if fornecedor else '' }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-medium">Telefone</label>
+                    <input type="text" name="telefone" class="form-control" value="{{ fornecedor.telefone if fornecedor else '' }}">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-medium">Email Corporativo</label>
+                <input type="email" name="email" class="form-control" value="{{ fornecedor.email if fornecedor else '' }}">
+            </div>
+            <div class="mb-4">
+                <label class="form-label fw-medium">Endereço</label>
+                <textarea name="endereco" class="form-control" rows="2">{{ fornecedor.endereco if fornecedor else '' }}</textarea>
+            </div>
+            
+            <div class="d-flex justify-content-end gap-2">
+                <a href="{{ url_for('fornecedores.index') }}" class="btn btn-light border">Cancelar</a>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Fornecedor</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

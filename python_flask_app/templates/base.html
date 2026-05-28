@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Comercial SaaS</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+        .sidebar { min-height: 100vh; background-color: #1e1e2d; color: #fff; padding-top: 1rem; }
+        .sidebar .nav-link { color: #a2a3b7; padding: 10px 20px; font-weight: 500; transition: all 0.3s; }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { color: #fff; background-color: #1b1b29; }
+        .sidebar .nav-link i { margin-right: 10px; width: 20px; text-align: center; }
+        .navbar-top { background-color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+        .main-content { padding: 20px; }
+        .card { border: none; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.03); margin-bottom: 20px; }
+        .card-header { background-color: #fff; border-bottom: 1px solid #edf2f9; padding: 15px 20px; font-weight: 600; border-radius: 10px 10px 0 0 !important; }
+        .stat-card { padding: 20px; border-radius: 10px; color: #fff; }
+        .stat-card h3 { font-size: 2rem; font-weight: 700; margin-bottom: 0; }
+        .stat-card p { margin-bottom: 0; opacity: 0.8; font-size: 0.9rem; }
+        .bg-gradient-primary { background: linear-gradient(45deg, #4e73df, #224abe); }
+        .bg-gradient-success { background: linear-gradient(45deg, #1cc88a, #13855c); }
+        .bg-gradient-warning { background: linear-gradient(45deg, #f6c23e, #dda20a); }
+        .bg-gradient-danger { background: linear-gradient(45deg, #e74a3b, #be2617); }
+    </style>
+</head>
+<body>
+
+{% if current_user.is_authenticated %}
+<div class="container-fluid p-0">
+    <div class="row g-0">
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar d-none d-md-block">
+            <h4 class="text-center mb-4 text-white"><i class="fas fa-cube text-primary"></i> SisSaaS</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('dashboard.index') }}"><i class="fas fa-chart-pie"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('vendas.index') }}"><i class="fas fa-shopping-cart"></i> PDV / Vendas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('produtos.index') }}"><i class="fas fa-box"></i> Produtos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('clientes.index') }}"><i class="fas fa-users"></i> Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('fornecedores.index') }}"><i class="fas fa-truck"></i> Fornecedores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('financeiro.index') }}"><i class="fas fa-dollar-sign"></i> Financeiro</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('relatorios.index') }}"><i class="fas fa-file-alt"></i> Relatórios</a>
+                </li>
+                {% if current_user.tipo == 'admin' %}
+                <li class="nav-item mt-3 pt-3 border-top border-secondary">
+                    <a class="nav-link" href="{{ url_for('usuarios.index') }}"><i class="fas fa-user-shield"></i> Usuários</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Main -->
+        <div class="col-md-10">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand navbar-light navbar-top px-4 py-3">
+                <button class="btn btn-light d-md-none me-3"><i class="fas fa-bars"></i></button>
+                <div class="ms-auto d-flex align-items-center">
+                    <span class="me-3 fw-medium">{{ current_user.nome }}</span>
+                    <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-outline-danger"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                </div>
+            </nav>
+
+            <!-- Content -->
+            <div class="main-content">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+    {% block login_content %}{% endblock %}
+{% endif %}
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

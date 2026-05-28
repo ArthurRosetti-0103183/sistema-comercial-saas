@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4 fw-bold"><i class="fas fa-file-pdf text-danger"></i> Central de Relatórios</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-danger border-start border-4 mb-4">
+            <div class="card-body">
+                <h5 class="fw-bold"><i class="fas fa-shopping-cart text-muted"></i> Relatório de Vendas (PDF)</h5>
+                <p class="text-muted">Gere um documento contendo todo o histórico de vendas realizadas em um período específico.</p>
+                
+                <form action="{{ url_for('relatorios.vendas_pdf') }}" method="POST" target="_blank">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">Data Inicial</label>
+                            <input type="date" name="data_inicio" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">Data Final</label>
+                            <input type="date" name="data_fim" class="form-control">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-download"></i> Gerar PDF de Vendas</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card shadow-sm border-warning border-start border-4 mb-4">
+            <div class="card-body">
+                <h5 class="fw-bold"><i class="fas fa-box text-muted"></i> Relatório de Estoque (Em Breve)</h5>
+                <p class="text-muted">Gere um inventário completo dos produtos com estoque baixo ou geral.</p>
+                <button class="btn btn-warning text-dark" disabled><i class="fas fa-hammer"></i> Módulo em Desenvolvimento</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
